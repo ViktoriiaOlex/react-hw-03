@@ -1,35 +1,76 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import { useEffect, useState } from 'react';
+import { nanoid } from 'nanoid';
+
+import ContactForm from './components/ContactForm/ContactForm';
+import ContactList from './components/ContactList/ContactList';
+import SearchBox from './components/SearchBox/SearchBox';
+
+import savedContactsList from './savedContactsList.json'
+
 
 function App() {
-  const [count, setCount] = useState(0)
+  const [contactsData, setContactsData] = useState(
+    localStorage.getItem('usersData')
+      ? JSON.parse(localStorage.getItem('usersData'))
+      : [
+        savedContactsList 
+        ]
+  );
+
+  const [seacrhValue, setSeacrhValue] = useState('');
+
+  const deleteContact = (id, evt) => {
+    if (evt.target.nodeName !== 'BUTTON') return;
+
+    setContactsData(prevState => {
+      return prevState.filter(signleUser => signleUser.id !== id);
+    });
+  };
+
+  const addContact = ({ username, phoneNumber }, actions) => {
+    actions.resetForm();
+    const userId = nanoid(5);
+    setContactsData(prevState => {
+      return [
+        ...prevState,
+        {
+          id: userId,
+          name: username,
+          number: `${phoneNumber.substring(0, 3)}-${phoneNumber.substring(
+            3,
+            5
+          )}-${phoneNumber.substring(5, 7)}`,
+        },
+      ];
+    });
+  };
+
+  const resultsOfSearch = contactsData.filter(signleUser => {
+    for (const userData in signleUser) {
+      if (
+        signleUser[userData]
+          .toLowerCase()
+          .includes(seacrhValue.toLowerCase().trim())
+      )
+        return true;
+    }
+  });
+
+  useEffect(() => {
+    localStorage.setItem('usersData', JSON.stringify(contactsData));
+  }, [contactsData]);
 
   return (
-    <>
-      <div>
-        <a href="https://vitejs.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.jsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
-  )
+    <div >
+      <h1>Phonebook</h1>
+      <ContactForm addUser={addContact} />
+      <SearchBox filterUserData={setSeacrhValue} value={seacrhValue} />
+      <ContactList
+        contactsData={resultsOfSearch}
+        deleteContact={deleteContact}
+      />
+    </div>
+  );
 }
 
-export default App
+export default App;

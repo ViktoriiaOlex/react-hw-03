@@ -28,12 +28,33 @@ body {
   place-items: center;
   min-width: 320px;
   min-height: 100vh;
+  background-color: fff;
+  padding-left: 50px;
+
 }
 
 h1 {
   font-size: 3.2em;
   line-height: 1.1;
+  color: #213547;
+  animation: tracking-in-contract-bck-bottom 1s cubic-bezier(0.215, 0.610, 0.355, 1.000) both;
+
 }
+@keyframes tracking-in-contract-bck-bottom {
+  0% {
+    letter-spacing: 1em;
+    transform: translateZ(400px) translateY(300px);
+    opacity: 0;
+  }
+  40% {
+    opacity: 0.6;
+  }
+  100% {
+    transform: translateZ(0) translateY(0);
+    opacity: 1;
+  }
+}
+
 
 button {
   border-radius: 8px;
@@ -45,9 +66,11 @@ button {
   background-color: #1a1a1a;
   cursor: pointer;
   transition: border-color 0.25s;
+  margin-right: 10px; 
 }
 button:hover {
-  border-color: #646cff;
+  border: 1px solid #646cff;
+
 }
 button:focus,
 button:focus-visible {
