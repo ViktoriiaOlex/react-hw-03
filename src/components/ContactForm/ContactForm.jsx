@@ -1,81 +1,73 @@
-import { useId, useState } from 'react';
-import { Formik, Form, Field, ErrorMessage } from 'formik';
-import * as Yup from 'yup';
-import { FaUserLock } from 'react-icons/fa6';
-import clsx from 'clsx';
+import { nanoid } from "nanoid";
+import { ErrorMessage, Field, Formik } from "formik";
+import * as Yup from "yup";
 
-import styles from './ContactForm.module.css';
+import css from './ContactForm.module.css';
 
-const ContactForm = ({ addUser }) => {
-  const dataValidationSchema = Yup.object().shape({
-    username: Yup.string()
-      .min(2, 'Too Short!')
-      .max(50, 'Too Long!')
-      .required('Required'),
-    phoneNumber: Yup.string()
-      .matches(/^\d+$/, 'Phone number is not valid')
-      .required('Required')
-      .min(7, 'Too Short!')
-      .max(7, 'Too Long!'),
+const ContactForm = ({ addContact, contacts }) => {
+  const INITIAL_FORM_DATA = {
+    name: "",
+    number: "",
+  };
+  const validationSchema = Yup.object().shape({
+    name: Yup.string()
+      .min(2, "Too short!")
+      .max(30, "User name must be less than 30 characters!")
+      .required("Name is required")
+      .test("uniqueName", "Name already exists", (value) => {
+        return !contacts.some((contact) => contact.name === value);
+      }),
+    number: Yup.string()
+      .min(3, "Phonenumber must be at least 3 characters!")
+      .required("Number is required"),
   });
-
-  const usernameId = useId();
-  const phoneNumberId = useId();
-
-  const [visibleSvg, setVisibleSvg] = useState(true);
+  const handleSubmit = (values, { resetForm }) => {
+    addContact({ id: nanoid(), ...values });
+    resetForm();
+  };
   return (
-    <Formik
-      initialValues={{
-        username: '',
-        phoneNumber: '',
-      }}
-      onSubmit={addUser}
-      validationSchema={dataValidationSchema}
-    >
-      <Form className={styles.addContactForm}>
-        <div className={styles.inputFieldContainer}>
-          <label htmlFor={usernameId}>Name</label>
-          <div className={styles.inputSvgContainer}>
+    <div>
+      <Formik
+        initialValues={INITIAL_FORM_DATA}
+        validationSchema={validationSchema}
+        onSubmit={handleSubmit}
+      >
+        {({ handleSubmit, isSubmitting }) => (
+          <form className={css.formContact} onSubmit={handleSubmit}>
+            <p className={css.title}>Name</p>
             <Field
+              className={css.field}
               type="text"
-              name="username"
-              id={usernameId}
-              className={clsx(styles.inputField, styles.inputFieldAddition)}
-              onFocus={() => {
-                setVisibleSvg(prevState => !prevState);
-              }}
-              onBlur={() => {
-                setVisibleSvg(prevState => !prevState);
-              }}
+              name="name"
+              placeholder="John Smith"
             />
-            <FaUserLock
-              className={clsx(styles.userLock, {
-                [styles.notVisible]: visibleSvg,
-              })}
+            <ErrorMessage
+              className={css.formError}
+                name="name" component="span" />
+            <p className={css.title}>Number</p>
+            <Field
+              className={css.field}
+              type="text"
+              name="number"
+              placeholder="123-45-67"
             />
-          </div>
-          <ErrorMessage
-            name="username"
-            render={msg => <span className={styles.formError}>{msg}</span>}
-          />
-        </div>
-        <div className={styles.inputFieldContainer}>
-          <label htmlFor={phoneNumberId}>Number</label>
-          <Field
-            type="text"
-            name="phoneNumber"
-            id={phoneNumberId}
-            className={styles.inputField}
-          />
-          <ErrorMessage
-            name="phoneNumber"
-            render={msg => <span className={styles.formError}>{msg}</span>}
-          />
-        </div>
-        <button type="submit">Add contact</button>
-      </Form>
-    </Formik>
+            <ErrorMessage 
+            className={css.formError}
+            name="number" component="span" />
+            <button
+              type="submit"
+              disabled={isSubmitting}
+              title="Click to save new phonenumber"
+              aria-label="Add new phonenumber"
+            >
+              Add contact
+            </button>
+          </form>
+        )}
+      </Formik>
+    </div>
   );
 };
+
 
 export default ContactForm;

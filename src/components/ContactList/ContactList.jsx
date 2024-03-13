@@ -1,11 +1,19 @@
 import Contact from '../Contact/Contact';
-import styles from './ContactList.module.css';
 
-const ContactList = ({ contactsData, deleteContact }) => {
+
+import css from './ContactList.module.css';
+
+const ContactList = ({ contacts, deleteContact }) => {
   return (
-    <ul className={styles.contactsList}>
-      <Contact contactsData={contactsData} deleteContact={deleteContact} />
-    </ul>
+    <div className={css.contactsList}>
+      {contacts.map((contact) => (
+        <Contact
+          contact={contact}
+          key={contact.id}
+          deleteContact={deleteContact}
+        />
+      ))}
+    </div>
   );
 };
 

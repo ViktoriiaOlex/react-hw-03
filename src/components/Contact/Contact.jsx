@@ -1,33 +1,30 @@
-import { FaUser } from 'react-icons/fa';
-import { FaPhone } from 'react-icons/fa6';
+import { IoPersonSharp } from "react-icons/io5";
+import { BsTelephonePlusFill } from "react-icons/bs";
 
 import css from './Contact.module.css';
 
-const Contact = ({ contactsData, deleteContact }) => {
-  return contactsData.map(({ id, name, number }) => {
-    return (
-      <li
-        key={id}
-        className={css.userItem}
-        onClick={evt => deleteContact(id, evt)}
-      >
-        <div>
-          <div className={css.nameContainer}>
-            <FaUser />
-            <p>{name}</p>
-          </div>
-          <div className={css.phoneContainer}>
-            <FaPhone />
-            <p>{number}</p>
-          </div>
-        </div>
+const Contact = ({ contact, deleteContact }) => {
+  const handleDelete = () => {
+    deleteContact(contact.id);
+  };
+  return (
+    <div className={css.contactBox}>
+      <div>
+        <p className={css.text}>
+          <IoPersonSharp className={css.icon} />
+          {contact.name}
+        </p>
+        <p className={css.text}>
+          <BsTelephonePlusFill className={css.icon} />
+          {contact.number}
+        </p>
+      </div>
 
-        <button type="button" className={css.deleteButton}>
-          Delete
-        </button>
-      </li>
-    );
-  });
+      <button type="button" onClick={handleDelete}>
+        Delete
+      </button>
+    </div>
+  );
 };
 
 export default Contact;

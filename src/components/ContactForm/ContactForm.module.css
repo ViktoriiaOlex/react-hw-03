@@ -1,44 +1,25 @@
-.addContactForm {
+.formContact {
     display: flex;
     flex-direction: column;
-    width: 264px;
-    margin: 24px 0;
-    gap: 16px;
-}
-
-.inputFieldContainer {
-    display: flex;
-    flex-direction: column;
-    gap: 4px;
-
-}
-
-.inputField {
-    transition: outline-color 200ms ease-in-out;
+    border: 1px solid #0f0101de;
+    padding: 30px;
+    max-width: 400px;
     width: 100%;
+    border-radius: 10px;
+    
 }
 
-.inputFieldAddition {
-    padding-right: 32px;
+.title {
+    display: flex;
+    padding: 0;
 }
 
-.inputField:focus {
-    outline-color: rgb(6, 44, 56);
-}
-
-.inputSvgContainer {
-    position: relative;
-}
-
-.userLock {
-    fill: rgb(44, 128, 157);
-    position: absolute;
-    top: 4px;
-    right: 10px;
-}
-
-.notVisible {
-    opacity: 0;
+.field {
+    border: 1px solid #10021f;
+    border-radius: 8px;
+    width: 400px;
+    height: 40px;
+    margin-bottom: 10px;
 }
 
 .formError {

@@ -13,10 +13,6 @@ p {
   margin: 0;
 }
 
-h1 {
-  margin-left: 24px;
-}
-
 p:last-child {
   margin-bottom: 0;
 }
@@ -44,5 +40,8 @@ img {
 }
 
 .appContainer {
-  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 40px;
+  padding: 36px;
 }

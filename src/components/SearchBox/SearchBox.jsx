@@ -1,22 +1,25 @@
-import { useId } from 'react';
 
-import styles from './SearchBox.module.css';
+import css from './SearchBox.module.css';
 
-const SearchBox = ({ filterUserData, value }) => {
-  const searchId = useId();
+const SearchBox = ({ searchContact, setSearchContact }) => {
+  const handleChange = (e) => {
+    setSearchContact(e.target.value);
+  };
 
   return (
-    <div className={styles.seacrchForm}>
-      <label htmlFor={searchId}>Find contacts by name</label>
+    <div className={css.searchWrapper}>
+      <p className={css.searchHeading}>Find contact by name:</p>
       <input
-        className={styles.searchInput}
+        className={css.searchInput}
         type="text"
-        id={searchId}
-        onChange={evt => filterUserData(evt.target.value)}
-        value={value}
+        placeholder=""
+        title="Type contact's name"
+        value={searchContact}
+        onChange={handleChange}
       />
     </div>
   );
 };
+
 
 export default SearchBox;
