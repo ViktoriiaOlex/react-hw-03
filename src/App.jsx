@@ -13,7 +13,7 @@ function App() {
     localStorage.getItem('usersData')
       ? JSON.parse(localStorage.getItem('usersData'))
       : [
-        savedContactsList 
+        savedContactsList
         ]
   );
 
@@ -47,14 +47,23 @@ function App() {
 
   const resultsOfSearch = contactsData.filter(signleUser => {
     for (const userData in signleUser) {
-      if (
-        signleUser[userData]
-          .toLowerCase()
-          .includes(seacrhValue.toLowerCase().trim())
-      )
+      const userValue = signleUser[userData];
+      if (typeof userValue === 'string' && userValue.toLowerCase().includes(seacrhValue.toLowerCase().trim())) {
         return true;
+      }
     }
   });
+
+  // const resultsOfSearch = contactsData.filter(signleUser => {
+  //   for (const userData in signleUser) {
+  //     if (
+  //       signleUser[userData]
+  //         .toLowerCase()
+  //         .includes(seacrhValue.toLowerCase().trim())
+  //     )
+  //       return true;
+  //   }
+  // });
 
   useEffect(() => {
     localStorage.setItem('usersData', JSON.stringify(contactsData));
