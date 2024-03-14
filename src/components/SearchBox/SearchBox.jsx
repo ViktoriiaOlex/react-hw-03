@@ -7,7 +7,7 @@ const SearchBox = ({ searchContact, setSearchContact }) => {
   };
 
   return (
-    <div className={css.searchWrapper}>
+    <div className={css.seacrchForm}>
       <p className={css.searchHeading}>Find contact by name:</p>
       <input
         className={css.searchInput}

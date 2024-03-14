@@ -4,18 +4,14 @@
     flex-direction: column;
     width: 264px;
 }
+
 .searchHeading {
 font-weight: bold;
-}
-.seacrchForm label {
-    margin-bottom: 4px;
 }
 
 .searchInput {
     transition: outline-color 100ms ease-in-out;
     width: 400px;
+    height: 30px;
 }
 
-.searchInput:focus {
-    outline-color: rgb(44, 128, 157);
-}
